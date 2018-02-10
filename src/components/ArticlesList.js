@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { Table, Popconfirm, Button } from 'antd';
+import { Table, Popconfirm, Button, Input } from 'antd';
 import axios from 'axios'
+import { Link } from 'react-router-dom'
+
+const Search = Input.Search 
 
 class ArticlesList extends Component {
   constructor() {
@@ -14,6 +17,7 @@ class ArticlesList extends Component {
   componentWillMount() {
     this.getArticles()
   }
+  
 
   getArticles = () => {
     axios
@@ -22,6 +26,36 @@ class ArticlesList extends Component {
         this.setState({ articles: res.data, isLoading: false })
         console.log(this.state.articles)
       })
+  }
+
+  onDelete = (id) => {
+    axios
+      .delete(`http://localhost:3000/api/articles/${id}`)
+      .then(res => {
+        console.log(this.state.articles)
+        this.setState({
+          articles: this.state.articles.filter(article => article.id !== id)
+        })
+      })
+  }
+
+  handleSearch = (value) => {
+    console.log(value)
+    axios
+      .get(`http://localhost:3000/api/articles?filter[where][content][regexp]=${value}`)
+      .then(res => {
+        console.log(res.data)
+        this.setState({ articles: res.data})
+      })
+    // 防止2次叠加
+    if(value == ''){
+      return
+    }
+    axios
+      .get(`http://localhost:3000/api/articles?filter[where][title][regexp]=${value}`)
+      .then(res => {
+        this.setState({ articles: this.state.articles.concat(res.data)})
+    })
   }
 
   render() {
@@ -55,8 +89,14 @@ class ArticlesList extends Component {
     };
     return (
       <div className="articles-list">
-        <Button type="default">新增</Button>
+        <Link to="/add"><Button type="default">新增</Button></Link>
         <Button type="danger">批量删除</Button>
+        <Search
+          placeholder="input search text"
+          onSearch={value => this.handleSearch(value)}
+          style={{ width: 200 }}
+        />
+        
         <Table loading={this.state.isLoading} rowSelection={rowSelection} columns={columns} dataSource={this.state.articles} rowKey={article => article.id} />
       </div>
     )
