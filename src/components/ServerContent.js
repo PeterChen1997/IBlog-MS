@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom'
 
 
 import ArticlesList from './ArticlesList'
+import ArticleEdit from './ArticleEdit'
 import ContentHome from './ContentHome'
 import ContentAdd from './ContentAdd'
 import ContentManage from './ContentManage'
@@ -19,6 +20,7 @@ class ServerContent extends Component {
             <Route exact path='/' component={ContentHome} />
             <Route exact path='/add' component={ContentAdd} />
             <Route exact path='/list' component={ArticlesList}/>
+            <Route exact path='/edit/:id' component={ArticleEdit}/>
             <Route exact path='/management' component={ContentManage} />
           </Switch>
         </div>

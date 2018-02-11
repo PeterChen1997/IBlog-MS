@@ -11,13 +11,14 @@ class ServerSider extends Component {
       case '/': return ['1']
       case '/add': return ['2']
       case '/list': return ['3']
+      case '/edit': return ['3']
       case '/management': return ['4']
     }
   }
 
   render() {
     const { Header, Content, Footer, Sider } = Layout;
-    const path = window.location.pathname
+    const path = `/${window.location.pathname.split('/')[1]}`
     const urlValue = this.parsePath(path)
     return (
       <Sider

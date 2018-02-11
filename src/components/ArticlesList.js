@@ -60,21 +60,28 @@ class ArticlesList extends Component {
 
   render() {
     const columns = [{
-      title: '题目',
+      title: '标题',
       dataIndex: 'title',
       render: (text, record) => <a target="_blank" href={`http://localhost:3001/articles/${record.id}`}>{text}</a>
+    },{
+      title: '类别',
+      dataIndex: 'topic',
+      render: (text) => text.join(',')
     }, {
+      title: '浏览量',
+      dataIndex: 'views',
+      render: (text) => {text}
+    },{
       title: '操作',
       dataIndex: 'operation',
       render: (text, record) => {
         return (
           <div>
-            <Button type="primary">修改</Button>
+            <Link to={`/edit/${record.id}`}><Button type="primary">修改</Button></Link>
             <Popconfirm title="确定要删除吗?" onConfirm={() => this.onDelete(record.id)}>
               <Button type="danger">删除</Button>
             </Popconfirm>
           </div>
-          
         )
       }
     }]
@@ -89,7 +96,6 @@ class ArticlesList extends Component {
     };
     return (
       <div className="articles-list">
-        <Link to="/add"><Button type="default">新增</Button></Link>
         <Button type="danger">批量删除</Button>
         <Search
           placeholder="input search text"
