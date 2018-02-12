@@ -39,6 +39,11 @@ class ArticlesList extends Component {
       })
   }
 
+  onDeleteMore = () => {
+    const keys = this.state.selectedKeys
+    keys.map(key => this.onDelete(key))
+  }
+
   handleSearch = (value) => {
     console.log(value)
     axios
@@ -69,8 +74,8 @@ class ArticlesList extends Component {
       render: (text) => text.join(',')
     }, {
       title: '浏览量',
-      dataIndex: 'views',
-      render: (text) => {text}
+      dataIndex: 'count',
+      render: (text) => text
     },{
       title: '操作',
       dataIndex: 'operation',
@@ -87,6 +92,9 @@ class ArticlesList extends Component {
     }]
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
+        this.setState({
+          selectedKeys: selectedRowKeys
+        })
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
       },
       getCheckboxProps: record => ({
@@ -96,7 +104,9 @@ class ArticlesList extends Component {
     };
     return (
       <div className="articles-list">
-        <Button type="danger">批量删除</Button>
+        <Popconfirm title="确定要删除吗?" onConfirm={() => this.onDeleteMore()}>
+            <Button type="danger">批量删除</Button>
+        </Popconfirm>
         <Search
           placeholder="input search text"
           onSearch={value => this.handleSearch(value)}

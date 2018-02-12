@@ -19,6 +19,7 @@ class ArticleEdit extends Component {
       newArticles: true,
       content: '',
       title: '',
+      desc: '',
       showTips: false
     }
   }
@@ -49,7 +50,10 @@ class ArticleEdit extends Component {
       const content = UnicodeToAscii(res.data.content)
       const title = res.data.title
       const topic = res.data.topic.join('-')
-      this.setState({ content, title, topic })
+      const desc = res.data.desc
+      const date = res.data.date._when
+      const count = res.data.count
+      this.setState({ content, title, topic, desc, date })
 
       this.refs.code.getCodeMirror()
         .doc.setValue(content)
@@ -62,7 +66,10 @@ class ArticleEdit extends Component {
     const data = {
       "content": unicode,
       "title": this.state.title,
-      "topic": this.state.topic.split('-')
+      "topic": this.state.topic.split('-'),
+      "desc": this.state.desc,
+      "date": this.state.date,
+      "count": this.state.count || 0
     }
     if(!this.state.newArticles) {
       const id = this.props.match.params.id
@@ -104,6 +111,8 @@ class ArticleEdit extends Component {
           <Col col={24} style={{ marginBottom: '20px'}}>
             <Input placeholder="标题" ref="title" style={{ width: '70%', marginRight: '2%' }} name="title" value={this.state.title} onChange={e => this.updateInput(e)}/>
             <Input placeholder="类别" ref="topic" style={{ width: '28%'}} value={this.state.topic} name="topic" onChange={e => this.updateInput(e)} />
+            <Input placeholder="简介" ref="desc" style={{ width: '70%', marginRight: '2%'}} value={this.state.desc} name="desc" onChange={e => this.updateInput(e)} />
+            <Input placeholder="发布时间" ref="date" style={{ width: '28%'}} value={this.state.date} name="date" onChange={e => this.updateInput(e)} />
           </Col>
           <Col md={12} sm={24} style={{height: '80vh', overflow: 'scroll'}}>
             <CodeMirror value={this.state.content} ref="code" onChange={this.updateCode} options={options} />
