@@ -4,7 +4,8 @@ import ReactMarkdown   from 'react-markdown'
 import CodeMirror from 'react-codemirror'
 import { Link } from 'react-router-dom'
 import { AsciiToUnicode, UnicodeToAscii } from '../helper'
-import db from './firebaseInit'
+import axios from 'axios'
+// import db from './firebaseInit'
 // import Lowlight from 'react-lowlight'
 // import js from 'highlight.js/lib/languages/javascript'
 
@@ -76,35 +77,42 @@ class ArticleEdit extends Component {
       //   },1200)
       // })
     } else {
-      db.collection('articles').add({
-        id: this.state.articleId,
-        title: this.state.title,
-        content: this.state.content,
-        date: new Date(),
-        desc: this.state.desc,
-        topic: this.state.topic.split('-')
-      })
-      .then(docRef => {
-        console.log('Client added: ', docRef.id)
-        this.setState({ showTips: true })
-          setTimeout(() => {
-            this.setState({ showTips: false })
-          },1200)
-      })
-      .catch(error => {
-        console.error('Error adding employee: ', error)
-      })
-    }
-      // axios
-      //   .post(`http://localhost:3000/api/articles`, data)
-      //   .then(res => {
-      //     console.log(res.data)
-      //     this.setState({ showTips: true })
+      // db.collection('articles').add({
+      //   id: this.state.articleId,
+      //   title: this.state.title,
+      //   content: this.state.content,
+      //   date: new Date(),
+      //   desc: this.state.desc,
+      //   topic: this.state.topic.split('-')
+      // })
+      // .then(docRef => {
+      //   console.log('Client added: ', docRef.id)
+      //   this.setState({ showTips: true })
       //     setTimeout(() => {
       //       this.setState({ showTips: false })
       //     },1200)
-      //   })
+      // })
+      // .catch(error => {
+      //   console.error('Error adding employee: ', error)
+      // })
     // }
+    const data = {
+        title: this.state.title,
+        content: this.state.content,
+        desc: this.state.desc,
+        topic: this.state.topic
+    }
+    console.log(data)
+      axios
+        .post(`http://localhost:3000/api/articles`, data,{headers: {'X-Requested-With': 'XMLHttpRequest'}})
+        .then(res => {
+          console.log(res)
+          this.setState({ showTips: true })
+          setTimeout(() => {
+            this.setState({ showTips: false })
+          },1200)
+        })
+    }
     
   }
   

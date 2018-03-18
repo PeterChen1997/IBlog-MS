@@ -53,7 +53,7 @@ class ArticlesList extends Component {
         this.setState({ articles: res.data})
       })
     // 防止2次叠加
-    if(value == ''){
+    if(value === ''){
       return
     }
     axios
@@ -71,10 +71,10 @@ class ArticlesList extends Component {
     },{
       title: '类别',
       dataIndex: 'topic',
-      render: (text) => text.join(',')
+      render: (text) => text
     }, {
       title: '浏览量',
-      dataIndex: 'count',
+      dataIndex: 'view',
       render: (text) => text
     },{
       title: '操作',
