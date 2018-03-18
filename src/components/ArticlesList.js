@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table, Popconfirm, Button, Input } from 'antd';
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import config from '../config'
 
 const Search = Input.Search 
 
@@ -21,7 +22,7 @@ class ArticlesList extends Component {
 
   getArticles = () => {
     axios
-      .get('http://localhost:3000/api/articles')
+      .get(`${config.url}/articles`)
       .then(res => {
         this.setState({ articles: res.data, isLoading: false })
         console.log(this.state.articles)
@@ -30,7 +31,7 @@ class ArticlesList extends Component {
 
   onDelete = (id) => {
     axios
-      .delete(`http://localhost:3000/api/articles/${id}`)
+      .delete(`${config.url}/articles/${id}`)
       .then(res => {
         console.log(this.state.articles)
         this.setState({

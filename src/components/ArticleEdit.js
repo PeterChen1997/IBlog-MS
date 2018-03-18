@@ -5,6 +5,7 @@ import CodeMirror from 'react-codemirror'
 import { Link } from 'react-router-dom'
 import { AsciiToUnicode, UnicodeToAscii } from '../helper'
 import axios from 'axios'
+import config from '../config'
 // import db from './firebaseInit'
 // import Lowlight from 'react-lowlight'
 // import js from 'highlight.js/lib/languages/javascript'
@@ -104,7 +105,7 @@ class ArticleEdit extends Component {
     }
     console.log(data)
       axios
-        .post(`http://localhost:3000/api/articles`, data,{headers: {'X-Requested-With': 'XMLHttpRequest'}})
+        .post(`${config.url}/articles`, data,{headers: {'X-Requested-With': 'XMLHttpRequest'}})
         .then(res => {
           console.log(res)
           this.setState({ showTips: true })
